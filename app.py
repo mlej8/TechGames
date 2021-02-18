@@ -2,7 +2,6 @@ from flask import Flask, jsonify, request
 import os
 
 app = Flask(__name__)
-database = []
 
 database = ["string1", "string2"]
 
@@ -24,7 +23,7 @@ def echo_path(pathParameter):
     }
     return jsonify(res)
 
-@app.route('/data')
+@app.route('/data', methods=["GET"])
 def data():
     return jsonify(database)
     
@@ -39,6 +38,14 @@ def postdata():
 def queryParams():
     # TODO: Handle the edge cases.
     return request.args.to_dict(), 200
+
+@app.route("/data/<int:index>", methods=["DELETE"])
+def delete(index):
+    if index >= len(database):
+        return "Index out of range", 400
+    else:
+        database.pop(index)
+        return "",200 
 
 if __name__ == "__main__":
     os.environ['FLASK_ENV'] = 'development'
