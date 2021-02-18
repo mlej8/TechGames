@@ -5,11 +5,11 @@ app = Flask(__name__)
 
 database = ["string1", "string2"]
 
-@app.route('/')
+@app.route('/', methods=["GET"])
 def hello_world():
     return 'Hello, World!'
 
-@app.route('/status')
+@app.route('/status', methods=["GET"])
 def get_func():
     res = {
         "status": "up"
@@ -17,7 +17,7 @@ def get_func():
     return jsonify(res)
 
 @app.route('/processPathData/<pathParameter>')
-def echo_path(pathParameter):
+def echo_path(pathParameter, methods=["GET"]):
     res = {
         "pathParam": pathParameter
     }
@@ -26,7 +26,17 @@ def echo_path(pathParameter):
 @app.route('/data', methods=["GET"])
 def data():
     return jsonify(database)
-    
+
+@app.route('/data/add', methods=["POST"])
+def adddata():
+    data = request.get_json()
+    if data.get("newString"):
+        database.append(data.get("newString"))
+        print(database)
+        return {}, 201
+    else:
+        return {}, 400
+
 @app.route('/processPOSTData', methods=["POST"])
 def postdata():
     # TODO: Handle the edge cases - Handle empty json, etc.  empty json 
