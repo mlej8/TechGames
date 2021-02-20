@@ -1,7 +1,8 @@
-from flask import Flask
-from flask import jsonify
+from flask import Flask, jsonify, request
 import os
+
 app = Flask(__name__)
+database = []
 
 database = ["string1", "string2"]
 
@@ -26,6 +27,18 @@ def echo_path(pathParameter):
 @app.route('/data')
 def data():
     return jsonify(database)
+    
+@app.route('/processPOSTData', methods=["POST"])
+def postdata():
+    # TODO: Handle the edge cases - Handle empty json, etc.  empty json 
+    data = request.get_json()
+    values = list(data.values())
+    return {"values": values}, 200
+
+@app.route('/processQueryData', methods=["GET"])
+def queryParams():
+    # TODO: Handle the edge cases.
+    return request.args.to_dict(), 200
 
 if __name__ == "__main__":
     os.environ['FLASK_ENV'] = 'development'
