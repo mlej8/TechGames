@@ -2,7 +2,6 @@ from flask import Flask, jsonify, request
 import os
 
 app = Flask(__name__)
-database = []
 
 database = ["string1", "string2"]
 
@@ -27,7 +26,17 @@ def echo_path(pathParameter):
 @app.route('/data')
 def data():
     return jsonify(database)
-    
+
+@app.route('/data/add', methods=["POST"])
+def adddata():
+    data = request.get_json()
+    if data.get("newString"):
+        database.append(data.get("newString"))
+        print(database)
+        return {}, 201
+    else:
+        return {}, 400
+
 @app.route('/processPOSTData', methods=["POST"])
 def postdata():
     # TODO: Handle the edge cases - Handle empty json, etc.  empty json 
