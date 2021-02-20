@@ -72,6 +72,14 @@ def returnplaylist():
     else:
         return {}, 400
 
+@app.route("/data/<int:index>", methods=["DELETE"])
+def delete(index):
+    if index >= len(database):
+        return "Index out of range", 400
+    else:
+        database.pop(index)
+        return "",200 
+
 if __name__ == "__main__":
     os.environ['FLASK_ENV'] = 'development'
     app.run()
