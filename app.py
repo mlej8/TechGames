@@ -5,11 +5,11 @@ app = Flask(__name__)
 
 database = ["string1", "string2"]
 
-@app.route('/')
+@app.route('/', methods=["GET"])
 def hello_world():
     return 'Hello, World!'
 
-@app.route('/status')
+@app.route('/status', methods=["GET"])
 def get_func():
     res = {
         "status": "up"
@@ -17,13 +17,13 @@ def get_func():
     return jsonify(res)
 
 @app.route('/processPathData/<pathParameter>')
-def echo_path(pathParameter):
+def echo_path(pathParameter, methods=["GET"]):
     res = {
         "pathParam": pathParameter
     }
     return jsonify(res)
 
-@app.route('/data')
+@app.route('/data', methods=["GET"])
 def data():
     return jsonify(database)
 
